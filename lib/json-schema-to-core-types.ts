@@ -279,7 +279,7 @@ function pushDown( schema: JSONSchema7, ctx: Context ): JSONSchema7
 		...( allOf && typeof allOf === 'object' ? { allOf } : { } ),
 		...( anyOf && typeof anyOf === 'object' ? { anyOf } : { } ),
 		...( oneOf && typeof oneOf === 'object' ? { oneOf } : { } ),
-	}
+	};
 }
 
 /**
@@ -344,7 +344,7 @@ function fromComplex( schema: JSONSchema7, ctx: Context ): AndType
 				and: ands.map( ( [ ctx, v ] ) => fromSchema( v, ctx ) ),
 			},
 		]
-	}
+	};
 }
 
 function isComplex( schema: JSONSchema7 )
