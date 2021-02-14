@@ -12,6 +12,7 @@ import type {
 	GenericTypeInfo,
 	ObjectProperty,
 	NodeDocument,
+	ConversionResult,
 } from "core-types"
 import {
 	CoreTypesErrorMeta,
@@ -38,7 +39,7 @@ const walkDown = ( ctx: Context, child: string | number ): Context =>
 	( { ...ctx, path: [ ...ctx.path, child ] } );
 
 export function convertJsonSchemaToCoreTypes( schema: JSONSchema7 | string )
-: NodeDocument
+: ConversionResult< NodeDocument >
 {
 	const parsed =
 		typeof schema === 'string'
@@ -48,7 +49,7 @@ export function convertJsonSchemaToCoreTypes( schema: JSONSchema7 | string )
 
 	const { definitions } = json;
 
-	return {
+	const doc: NodeDocument = {
 		version: 1,
 		types: Object
 			.keys( definitions ?? { } )
@@ -86,6 +87,12 @@ export function convertJsonSchemaToCoreTypes( schema: JSONSchema7 | string )
 				const namedNode: NamedType< NodeType > = { ...node, name };
 				return namedNode;
 			} ),
+	};
+
+	return {
+		data: doc,
+		convertedTypes: doc.types.map( ( { name } ) => name ),
+		notConvertedTypes: [ ],
 	};
 }
 

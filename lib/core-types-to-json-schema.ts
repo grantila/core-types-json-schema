@@ -4,6 +4,7 @@ import type {
 	GenericTypeInfo,
 	NodeWithConstEnum,
 	NodeDocument,
+	ConversionResult,
 } from 'core-types'
 import { UnsupportedError } from 'core-types'
 
@@ -56,7 +57,7 @@ export function convertCoreTypesToJsonSchema(
 	doc: NodeDocument,
 	options?: ConvertCoreTypesToJsonSchemaOptions
 )
-: JSONSchema7
+: ConversionResult< JSONSchema7 >
 {
 	const { version, types } = doc;
 	if ( version !== 1 )
@@ -72,7 +73,11 @@ export function convertCoreTypesToJsonSchema(
 
 	decorateSchema( schema, options ?? { } );
 
-	return schema;
+	return {
+		data: schema,
+		convertedTypes: types.map( ( { name } ) => name ),
+		notConvertedTypes: [ ],
+	};
 }
 
 function toJsonSchema( node: NodeType ): JSONSchema7

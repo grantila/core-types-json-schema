@@ -11,7 +11,7 @@ describe( "convertJsonSchemaToCoreTypes", ( ) =>
 {
 	it( "Invalid schema (without definitions)", ( ) =>
 	{
-		const ct = convertJsonSchemaToCoreTypes( {
+		const { data: ct } = convertJsonSchemaToCoreTypes( {
 			type: "string",
 		} );
 
@@ -20,7 +20,7 @@ describe( "convertJsonSchemaToCoreTypes", ( ) =>
 
 	it( "One simple type", ( ) =>
 	{
-		const ct = convertJsonSchemaToCoreTypes( {
+		const { data: ct } = convertJsonSchemaToCoreTypes( {
 			definitions: {
 				foo: { type: "string" },
 			},
@@ -33,7 +33,7 @@ describe( "convertJsonSchemaToCoreTypes", ( ) =>
 
 	it( "Complex types anyOf", ( ) =>
 	{
-		const ct = convertJsonSchemaToCoreTypes( {
+		const { data: ct } = convertJsonSchemaToCoreTypes( {
 			definitions: {
 				AnyOfInlineSameType: {
 					anyOf: [
@@ -125,7 +125,7 @@ describe( "convertJsonSchemaToCoreTypes", ( ) =>
 
 	it( "Complex types allOf", ( ) =>
 	{
-		const ct = convertJsonSchemaToCoreTypes( {
+		const { data: ct } = convertJsonSchemaToCoreTypes( {
 			definitions: {
 				AllOfInlineSameType: {
 					allOf: [

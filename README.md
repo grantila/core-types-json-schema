@@ -22,6 +22,9 @@ Other conversion packages:
 
 # Usage
 
+There are two conversion functions, `convertCoreTypesToJsonSchema` and `convertJsonSchemaToCoreTypes`, both returning a wrapped value, of the type [`ConversionResult`](https://github.com/grantila/core-types#conversion).
+
+
 ## core-types to JSON Schema
 
 ```ts
@@ -29,7 +32,7 @@ import { convertCoreTypesToJsonSchema } from 'core-types-json-schema'
 
 let doc; // This core-types document comes from somewhere
 
-const jsonSchema = convertCoreTypesToJsonSchema( doc );
+const { data: jsonSchema } = convertCoreTypesToJsonSchema( doc );
 ```
 
 You can provide options as a second argument on the type:
@@ -54,7 +57,7 @@ import { convertJsonSchemaToCoreTypes } from 'core-types-json-schema'
 
 let jsonSchema; // This JSON Schema comes from somewhere
 
-const doc = convertJsonSchemaToCoreTypes( jsonSchema );
+const { data: doc } = convertJsonSchemaToCoreTypes( jsonSchema );
 ```
 
 

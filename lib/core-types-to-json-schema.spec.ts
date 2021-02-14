@@ -10,8 +10,8 @@ const wrapRoot = ( types: Array< NamedType > ): NodeDocument => ( {
 
 const convertWrapper = ( doc: NodeDocument ): JSONSchema7 =>
 {
-	const ret = convertCoreTypesToJsonSchema( doc );
-	const { $comment, ...rest } = ret;
+	const { data } = convertCoreTypesToJsonSchema( doc );
+	const { $comment, ...rest } = data;
 	return rest;
 }
 
@@ -37,7 +37,7 @@ describe( 'convertCoreTypesToJsonSchema', ( ) =>
 
 	it( 'Included default comment', ( ) =>
 	{
-		const js = convertCoreTypesToJsonSchema( wrapRoot( [
+		const { data: js } = convertCoreTypesToJsonSchema( wrapRoot( [
 			{
 				name: 'foo',
 				type: 'string',
@@ -56,7 +56,7 @@ describe( 'convertCoreTypesToJsonSchema', ( ) =>
 
 	it( 'Included custom comment', ( ) =>
 	{
-		const js = convertCoreTypesToJsonSchema( wrapRoot( [
+		const { data: js } = convertCoreTypesToJsonSchema( wrapRoot( [
 			{
 				name: 'foo',
 				type: 'string',
