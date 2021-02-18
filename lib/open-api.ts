@@ -34,7 +34,7 @@ export function convertCoreTypesToOpenApi(
 }
 
 export function convertOpenApiToCoreTypes(
-	schema: PartialOpenApiSchema
+	schema: PartialOpenApiSchema | string
 )
 : ConversionResult< NodeDocument >
 {
