@@ -4,3 +4,15 @@ export type {
 
 export { convertCoreTypesToJsonSchema } from './lib/core-types-to-json-schema'
 export { convertJsonSchemaToCoreTypes } from './lib/json-schema-to-core-types'
+
+export {
+	CoreTypesToOpenApiOptions,
+	convertCoreTypesToOpenApi,
+	convertOpenApiToCoreTypes,
+} from './lib/open-api'
+
+export {
+	OpenApiSchemaTypeDefinition,
+	jsonSchemaDocumentToOpenApi,
+	openApiToJsonSchema,
+} from 'openapi-json-schema'

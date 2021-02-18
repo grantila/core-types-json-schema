@@ -8,9 +8,9 @@
 
 # core-types-json-schema
 
-This package provides conversion functions between [`core-types`][core-types-github-url] and JSON Schema.
+This package provides conversion functions between [`core-types`][core-types-github-url] and JSON Schema (and Open API through the [`openapi-json-schema`](https://github.com/grantila/openapi-json-schema) package).
 
-*You probably don't want to use this package directly, but rather [`typeconv`][typeconv-github-url] which uses this package to convert between TypeScript, JSON Schema and GraphQL.*
+*You probably don't want to use this package directly, but rather [`typeconv`][typeconv-github-url] which uses this package to convert between TypeScript, JSON Schema, GraphQL and Open API.*
 
 
 # See
@@ -22,7 +22,9 @@ Other conversion packages:
 
 # Usage
 
-There are two conversion functions, `convertCoreTypesToJsonSchema` and `convertJsonSchemaToCoreTypes`, both returning a wrapped value, of the type [`ConversionResult`](https://github.com/grantila/core-types#conversion).
+There are four main conversion functions, `convertCoreTypesToJsonSchema`, `convertJsonSchemaToCoreTypes`, `convertCoreTypesToOpenApi` and `convertOpenApiTpCoreTypes`, all returning a wrapped value, of the type [`ConversionResult`](https://github.com/grantila/core-types#conversion).
+
+This package also re-exports `jsonSchemaTypeToOpenApi` and `openApiToJsonSchemaType` from [`openapi-json-schema`](https://github.com/grantila/openapi-json-schema).
 
 
 ## core-types to JSON Schema
@@ -58,6 +60,41 @@ import { convertJsonSchemaToCoreTypes } from 'core-types-json-schema'
 let jsonSchema; // This JSON Schema comes from somewhere
 
 const { data: doc } = convertJsonSchemaToCoreTypes( jsonSchema );
+```
+
+
+## core-types to Open API
+
+```ts
+import { convertCoreTypesToOpenApi } from 'core-types-json-schema'
+
+let doc; // This core-types document comes from somewhere
+
+const { data: jsonSchema } = convertCoreTypesToOpenApi( doc );
+```
+
+You can provide options as a second argument on the type:
+
+```ts
+interface CoreTypesToOpenApiOptions extends ConvertCoreTypesToJsonSchemaOptions
+{
+    title: string;
+    version: string;
+    schemaVersion?: string;
+}
+```
+
+The `title` and `version` are required for Open API. The `schemaVersion` defaults to `3.0.0`.
+
+
+## Open API to core-types
+
+```ts
+import { convertOpenApiTpCoreTypes } from 'core-types-json-schema'
+
+let openApiSchema; // This Open API schema comes from somewhere
+
+const { data: doc } = convertOpenApiTpCoreTypes( openApiSchema );
 ```
 
 
