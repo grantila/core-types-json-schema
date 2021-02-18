@@ -1,10 +1,11 @@
-import type { JSONSchema7 } from "json-schema"
+import type { JSONSchema7, JSONSchema7TypeName } from "json-schema"
 import type {
 	NodeType,
 	GenericTypeInfo,
 	NodeWithConstEnum,
 	NodeDocument,
 	ConversionResult,
+	OrType,
 } from 'core-types'
 import { UnsupportedError } from 'core-types'
 
@@ -80,6 +81,30 @@ export function convertCoreTypesToJsonSchema(
 	};
 }
 
+function isOnlyType( node: JSONSchema7 ): boolean
+{
+	const keys = Object.keys( node );
+	return keys.length === 1 && keys[ 0 ] === 'type';
+}
+
+/**
+ * Convert an 'or' type to anyOf, but try to convert to a type array if
+ * possible. This might improve further conversion to Open API (nullable).
+ */
+function toJsonSchemaUnion( node: OrType ): JSONSchema7
+{
+	const anyOf = node.or.map( subNode => toJsonSchema( subNode ) );
+	const ret = annotate( node, { anyOf } );
+
+	if ( anyOf.length > 1 && !anyOf.some( n => !isOnlyType( n ) ) )
+	{
+		delete ret.anyOf;
+		ret.type = anyOf.map( ( { type } ) => type as JSONSchema7TypeName );
+	}
+
+	return ret;
+}
+
 function toJsonSchema( node: NodeType ): JSONSchema7
 {
 	if ( node.type === 'any' )
@@ -99,9 +124,7 @@ function toJsonSchema( node: NodeType ): JSONSchema7
 			allOf: node.and.map( subNode => toJsonSchema( subNode ) ),
 		} );
 	else if ( node.type === 'or' )
-		return annotate( node, {
-			anyOf: node.or.map( subNode => toJsonSchema( subNode ) ),
-		} );
+		return toJsonSchemaUnion( node );
 	else if ( node.type === 'object' )
 	{
 		const allKeys = Object.keys( node.properties );

@@ -215,7 +215,7 @@ describe( 'convertCoreTypesToJsonSchema', ( ) =>
 					{ type: 'string', enum: [ 'foo', 'bar' ] },
 					{ type: 'number' },
 				],
-				description: 'either or'
+				description: 'either or',
 			},
 		] ) );
 
@@ -226,7 +226,31 @@ describe( 'convertCoreTypesToJsonSchema', ( ) =>
 						{ type: 'string', enum: [ 'foo', 'bar' ] },
 						{ type: 'number' },
 					],
-					description: 'either or'
+					description: 'either or',
+				},
+			}
+		} );
+	} );
+
+	it( 'Complex types - unions of simple types (only type constraint)', ( ) =>
+	{
+		const js = convertWrapper( wrapRoot( [
+			{
+				name: 'union',
+				type: 'or',
+				or: [
+					{ type: 'string' },
+					{ type: 'number' },
+				],
+				description: 'either or',
+			},
+		] ) );
+
+		expect( js ).toStrictEqual( {
+			definitions: {
+				union: {
+					type: [ 'string', 'number' ],
+					description: 'either or',
 				},
 			}
 		} );
