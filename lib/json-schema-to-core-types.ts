@@ -1,3 +1,5 @@
+import { getAstByString, getAstByObject, getLocation } from 'jsonpos'
+import { decodeRefNameJsonSchema } from 'openapi-json-schema'
 import type {
 	JSONSchema7,
 	JSONSchema7Definition,
@@ -24,8 +26,7 @@ import {
 	ensureArray,
 } from "core-types"
 
-import { decodeRefName } from './utils'
-import { getAstByString, getAstByObject, getLocation } from 'jsonpos'
+import { annotateCoreTypes as annotate } from "./annotations"
 
 
 interface Context
@@ -377,7 +378,7 @@ function fromSchema( schema: JSONSchema7Definition, ctx: Context ): NodeType
 		);
 
 	const makeRefType = ( ref: string ): RefType =>
-		( { type: 'ref', ref: decodeRefName( ref ) } );
+		( { type: 'ref', ref: decodeRefNameJsonSchema( ref ) } );
 
 	const wrapRefType = < T extends NodeType >( node: T ): T | AndType =>
 		schema.$ref === undefined
@@ -418,20 +419,18 @@ function fromSchemaAndType(
 )
 : NodeType
 {
-	// TODO: Implement annotations
-
 	if ( isPrimitiveType( type ) )
 	{
 		if ( type === 'null' )
-			return { type: 'null' };
+			return annotate( { type: 'null' }, schema );
 		else
-			return { type, ...constEnum };
+			return annotate( { type, ...constEnum }, schema );
 	}
 	else if ( type === 'array' )
 	{
 		if ( Array.isArray( schema.items ) )
 		{
-			return {
+			return annotate( {
 				type: 'tuple',
 				elementTypes: schema.items.map( item =>
 					fromSchema( item, walkDown( ctx, 'items' ) )
@@ -447,21 +446,21 @@ function fromSchemaAndType(
 					),
 				minItems: schema.minItems ?? 0,
 				...constEnum,
-			};
+			}, schema );
 		}
 		else if ( schema.items === false )
 		{
-			return {
+			return annotate( {
 				type: 'tuple',
 				elementTypes: [ ],
 				additionalItems: false,
 				minItems: 0,
 				...constEnum,
-			};
+			}, schema );
 		}
 		else
 		{
-			return {
+			return annotate( {
 				type: 'array',
 				elementType:
 					(
@@ -471,13 +470,13 @@ function fromSchemaAndType(
 					? { type: 'any' }
 					: fromSchema( schema.items, walkDown( ctx, 'items' ) ),
 				...constEnum,
-			};
+			}, schema );
 		}
 	}
 	else if ( type === 'object' )
 	{
 		const required = new Set( schema.required ?? [ ] );
-		return {
+		return annotate( {
 			type: 'object',
 			properties: Object.fromEntries(
 				Object.entries( schema.properties ?? { } )
@@ -502,7 +501,7 @@ function fromSchemaAndType(
 					walkDown( ctx, 'additionalProperties' )
 				),
 			...constEnum,
-		};
+		}, schema );
 	}
 	else
 		ctx.throwUnsupportedError(

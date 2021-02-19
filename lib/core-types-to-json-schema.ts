@@ -1,4 +1,5 @@
 import type { JSONSchema7, JSONSchema7TypeName } from "json-schema"
+import { encodeRefNameJsonSchema } from 'openapi-json-schema'
 import type {
 	NodeType,
 	GenericTypeInfo,
@@ -9,8 +10,7 @@ import type {
 } from 'core-types'
 import { UnsupportedError } from 'core-types'
 
-import { encodeRefName } from './utils'
-import { annotate } from "./annotations"
+import { annotateJsonSchema as annotate } from "./annotations"
 
 
 export interface ConvertCoreTypesToJsonSchemaOptions
@@ -175,7 +175,7 @@ function toJsonSchema( node: NodeType ): JSONSchema7
 		} ) );
 	else if ( node.type === 'ref' )
 		return annotate( node, constEnum( node, {
-			$ref: encodeRefName( node.ref ),
+			$ref: encodeRefNameJsonSchema( node.ref ),
 		} ) );
 	else
 		throw new UnsupportedError(
