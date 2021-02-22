@@ -8,7 +8,7 @@ import {
 
 describe( "Open API", ( ) =>
 {
-	it( "Full circle", ( ) =>
+	describe( "Two-way conversion circle", ( ) =>
 	{
 		const openApi: PartialOpenApiSchema = {
 			info: {
@@ -29,14 +29,32 @@ describe( "Open API", ( ) =>
 			},
 		};
 
-		const { data } = convertOpenApiToCoreTypes( openApi );
+		it( "As string", ( ) =>
+		{
+			const { data } = convertOpenApiToCoreTypes(
+				JSON.stringify( openApi )
+			);
 
-		const { data: same } = convertCoreTypesToOpenApi(
-			simplify( data ),
-			{ title: 'the title', version: '1' }
-		);
+			const { data: same } = convertCoreTypesToOpenApi(
+				simplify( data ),
+				{ title: 'the title', version: '1' }
+			);
 
-		delete ( same as any ).$comment;
-		expect( same ).toStrictEqual( openApi );
+			delete ( same as any ).$comment;
+			expect( same ).toStrictEqual( openApi );
+		} );
+
+		it( "As string", ( ) =>
+		{
+			const { data } = convertOpenApiToCoreTypes( openApi );
+
+			const { data: same } = convertCoreTypesToOpenApi(
+				simplify( data ),
+				{ title: 'the title', version: '1' }
+			);
+
+			delete ( same as any ).$comment;
+			expect( same ).toStrictEqual( openApi );
+		} );
 	} );
 } );

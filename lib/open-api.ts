@@ -38,6 +38,10 @@ export function convertOpenApiToCoreTypes(
 )
 : ConversionResult< NodeDocument >
 {
+	// TODO: Implement JSON AST parsing and a source map separately to
+	//       the tree (src path -> target path)
+	schema = typeof schema === 'string' ? JSON.parse( schema ) : schema;
+
 	const jsonSchema = openApiToJsonSchema( schema );
 	return convertJsonSchemaToCoreTypes( jsonSchema as JSONSchema7 );
 }
