@@ -39,7 +39,7 @@
     "@types/json-schema": "^7.0.7",
     "core-types": "^1.4.0",
     "jsonpos": "^1.1.0",
-    "openapi-json-schema": "^1.1.0"
+    "openapi-json-schema": "^1.1.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
