@@ -2,7 +2,10 @@ export type {
 	ConvertCoreTypesToJsonSchemaOptions
 } from './lib/core-types-to-json-schema'
 
-export { convertCoreTypesToJsonSchema } from './lib/core-types-to-json-schema'
+export {
+	decorateSchema,
+	convertCoreTypesToJsonSchema,
+} from './lib/core-types-to-json-schema'
 export { convertJsonSchemaToCoreTypes } from './lib/json-schema-to-core-types'
 
 export {
@@ -16,3 +19,5 @@ export {
 	jsonSchemaDocumentToOpenApi,
 	openApiToJsonSchema,
 } from 'openapi-json-schema'
+
+export * as helpers from './lib/annotations'

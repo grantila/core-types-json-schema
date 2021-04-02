@@ -21,21 +21,21 @@ export interface ConvertCoreTypesToJsonSchemaOptions
 	userPackageUrl?: string;
 }
 
-function decorateSchema(
+export function decorateSchema(
 	schema: JSONSchema7,
 	{
 		filename,
 		sourceFilename,
 		userPackage,
 		userPackageUrl,
-	}: ConvertCoreTypesToJsonSchemaOptions
+	}: ConvertCoreTypesToJsonSchemaOptions,
+	packageName: string = 'core-types-json-schema',
+	packageUrl: string = 'https://github.com/grantila/core-types-json-schema',
 )
 {
 	if ( typeof filename !== 'undefined' )
 		schema.$id ??= filename;
 
-	const thisName = 'core-types-json-schema';
-	const thisUrl = 'https://github.com/grantila/core-types-json-schema';
 	const onbehalf =
 		!userPackage && !userPackageUrl
 		? ''
@@ -50,7 +50,7 @@ function decorateSchema(
 
 	schema.$comment ??=
 		`Generated${fromFilenameComment} by ` +
-		`${thisName} (${thisUrl})` +
+		`${packageName} (${packageUrl})` +
 		( onbehalf ? ` on behalf of ${onbehalf}` : '' );
 }
 

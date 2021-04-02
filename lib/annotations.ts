@@ -28,8 +28,15 @@ export function annotateJsonSchema(
 	};
 }
 
-export function annotateCoreTypes( node: NodeType, jsonSchema: JSONSchema7 )
-: NodeType
+export function annotateCoreTypes
+	<
+		T extends CoreTypeAnnotations & Partial< NodeType >
+	>
+	(
+		node: T,
+		jsonSchema: JSONSchema7
+	)
+: T
 {
 	const { description, see } =
 		splitDescriptionAndSee( jsonSchema.description ?? '' )
