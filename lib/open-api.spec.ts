@@ -40,7 +40,7 @@ describe( "Open API", ( ) =>
 				{ title: 'the title', version: '1' }
 			);
 
-			delete ( same as any ).$comment;
+			delete same.info['x-comment'];
 			expect( same ).toStrictEqual( openApi );
 		} );
 
@@ -53,7 +53,7 @@ describe( "Open API", ( ) =>
 				{ title: 'the title', version: '1' }
 			);
 
-			delete ( same as any ).$comment;
+			delete same.info['x-comment'];
 			expect( same ).toStrictEqual( openApi );
 		} );
 	} );
