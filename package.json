@@ -37,7 +37,7 @@
   ],
   "dependencies": {
     "@types/json-schema": "^7.0.9",
-    "core-types": "^1.9.1",
+    "core-types": "^1.10.0",
     "jsonpos": "^1.1.0",
     "openapi-json-schema": "^1.1.3"
   },
