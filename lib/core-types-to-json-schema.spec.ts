@@ -177,6 +177,54 @@ describe( 'convertCoreTypesToJsonSchema', ( ) =>
 		} );
 	} );
 
+	it( 'Convert simple anyOf to type array', ( ) =>
+	{
+		const js = convertWrapper( wrapRoot( [
+			{
+				name: 'or',
+				type: 'or',
+				or: [
+					{ type: 'string' },
+					{ type: 'number' },
+				],
+				description: 'either string or number',
+			},
+		] ) );
+
+		expect( js ).toStrictEqual( {
+			definitions: {
+				or: {
+					type: [ 'string', 'number' ],
+					description: 'either string or number',
+				},
+			}
+		} );
+	} );
+
+	it( 'Convert simple (but with title) anyOf to type array', ( ) =>
+	{
+		const js = convertWrapper( wrapRoot( [
+			{
+				name: 'or',
+				type: 'or',
+				or: [
+					{ type: 'string', title: 'or-string' },
+					{ type: 'number', title: 'or-number' },
+				],
+				description: 'either string or number',
+			},
+		] ) );
+
+		expect( js ).toStrictEqual( {
+			definitions: {
+				or: {
+					type: [ 'string', 'number' ],
+					description: 'either string or number',
+				},
+			}
+		} );
+	} );
+
 	it( 'Tuple', ( ) =>
 	{
 		const js = convertWrapper( wrapRoot( [

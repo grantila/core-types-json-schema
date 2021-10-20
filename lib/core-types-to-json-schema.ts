@@ -83,8 +83,9 @@ export function convertCoreTypesToJsonSchema(
 
 function isOnlyType( node: JSONSchema7 ): boolean
 {
-	const keys = Object.keys( node );
-	return keys.length === 1 && keys[ 0 ] === 'type';
+	const keys = Object.keys( node ).sort( );
+	return keys.length === 1 && keys[ 0 ] === 'type' ||
+		keys.length === 2 && keys[ 0 ] === 'title' && keys[ 1 ] === 'type';
 }
 
 /**
