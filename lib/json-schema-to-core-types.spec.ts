@@ -214,4 +214,102 @@ describe( "convertJsonSchemaToCoreTypes", ( ) =>
 
 		expect( simplify( ct ) ).toStrictEqual( wrapRoot( expected ) );
 	} );
+
+	describe( "additionalProperties", ( ) =>
+	{
+		it( "default", ( ) =>
+		{
+			const { data: ct } = convertJsonSchemaToCoreTypes( {
+				definitions: {
+					foo: {
+						type: "object",
+						properties: {
+							foo: { type: "string" },
+						},
+					},
+				},
+			} );
+
+			expect( ct ).toStrictEqual(
+				wrapRoot( [ {
+					name: 'foo',
+					type: 'object',
+					properties: {
+						foo: {
+							required: false,
+							node: {
+								type: "string",
+							},
+						},
+					},
+					additionalProperties: true,
+				} ] )
+			);
+		} );
+
+		it( "false", ( ) =>
+		{
+			const { data: ct } = convertJsonSchemaToCoreTypes( {
+				definitions: {
+					foo: {
+						type: "object",
+						properties: {
+							foo: { type: "string" },
+						},
+					},
+				},
+			}, {
+				defaultAdditionalProperties: false,
+			} );
+
+			expect( ct ).toStrictEqual(
+				wrapRoot( [ {
+					name: 'foo',
+					type: 'object',
+					properties: {
+						foo: {
+							required: false,
+							node: {
+								type: "string",
+							},
+						},
+					},
+					additionalProperties: false,
+				} ] )
+			);
+		} );
+
+		it( "additionalProperties (default)", ( ) =>
+		{
+			const { data: ct } = convertJsonSchemaToCoreTypes( {
+				definitions: {
+					foo: {
+						type: "object",
+						properties: {
+							foo: { type: "string" },
+						},
+					},
+				},
+			}, {
+				defaultAdditionalProperties: { type: "boolean" },
+			} );
+
+			expect( ct ).toStrictEqual(
+				wrapRoot( [ {
+					name: 'foo',
+					type: 'object',
+					properties: {
+						foo: {
+							required: false,
+							node: {
+								type: "string",
+							},
+						},
+					},
+					additionalProperties: { type: "boolean" },
+				} ] )
+			);
+		} );
+
+	} );
 } );

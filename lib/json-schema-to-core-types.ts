@@ -29,17 +29,34 @@ import {
 import { annotateCoreTypes as annotate } from "./annotations"
 
 
+type AdditionalProperties =
+	Exclude< JSONSchema7[ 'additionalProperties' ], undefined >;
+
+export interface ConvertJsonSchemaToCoreTypesOptions
+{
+	/**
+	 * When additionalProperties is not set, default to this value.
+	 *
+	 * @default true
+	 */
+	defaultAdditionalProperties?: AdditionalProperties | undefined;
+}
+
 interface Context
 {
 	locByPath( ): CoreTypesErrorMeta;
 	path: Array< string | number >;
 	throwUnsupportedError( message: string, meta: CoreTypesErrorMeta ): never;
+	defaultAdditionalProperties: AdditionalProperties;
 }
 
 const walkDown = ( ctx: Context, child: string | number ): Context =>
 	( { ...ctx, path: [ ...ctx.path, child ] } );
 
-export function convertJsonSchemaToCoreTypes( schema: JSONSchema7 | string )
+export function convertJsonSchemaToCoreTypes(
+	schema: JSONSchema7 | string,
+	options: ConvertJsonSchemaToCoreTypesOptions = { }
+)
 : ConversionResult< NodeDocument >
 {
 	const parsed =
@@ -81,7 +98,9 @@ export function convertJsonSchemaToCoreTypes( schema: JSONSchema7 | string )
 								{ dataPath: this.path, markIdentifier: true }
 							);
 						throw new UnsupportedError( message, meta );
-					}
+					},
+					defaultAdditionalProperties:
+						options.defaultAdditionalProperties ?? true,
 				};
 				const node = fromSchema( typeSchema, ctx );
 
@@ -476,6 +495,10 @@ function fromSchemaAndType(
 	else if ( type === 'object' )
 	{
 		const required = new Set( schema.required ?? [ ] );
+
+		const additionalProperties =
+			schema.additionalProperties ?? ctx.defaultAdditionalProperties;
+
 		return annotate( {
 			type: 'object',
 			properties: Object.fromEntries(
@@ -492,12 +515,10 @@ function fromSchemaAndType(
 				] )
 			),
 			additionalProperties:
-				typeof schema.additionalProperties === 'undefined'
-				? true
-				: typeof schema.additionalProperties === 'boolean'
-				? schema.additionalProperties
+				typeof additionalProperties === 'boolean'
+				? additionalProperties
 				: fromSchema(
-					schema.additionalProperties,
+					additionalProperties,
 					walkDown( ctx, 'additionalProperties' )
 				),
 			...constEnum,
