@@ -2,7 +2,6 @@
 [![downloads][downloads-image]][npm-url]
 [![build status][build-image]][build-url]
 [![coverage status][coverage-image]][coverage-url]
-[![Language grade: JavaScript][lgtm-image]][lgtm-url]
 [![Node.JS version][node-version]][node-url]
 
 
@@ -101,12 +100,10 @@ const { data: doc } = convertOpenApiTpCoreTypes( openApiSchema );
 [npm-image]: https://img.shields.io/npm/v/core-types-json-schema.svg
 [npm-url]: https://npmjs.org/package/core-types-json-schema
 [downloads-image]: https://img.shields.io/npm/dm/core-types-json-schema.svg
-[build-image]: https://img.shields.io/github/workflow/status/grantila/core-types-json-schema/Master.svg
+[build-image]: https://img.shields.io/github/actions/workflow/status/grantila/core-types-json-schema/master.yml?branch=master
 [build-url]: https://github.com/grantila/core-types-json-schema/actions?query=workflow%3AMaster
 [coverage-image]: https://coveralls.io/repos/github/grantila/core-types-json-schema/badge.svg?branch=master
 [coverage-url]: https://coveralls.io/github/grantila/core-types-json-schema?branch=master
-[lgtm-image]: https://img.shields.io/lgtm/grade/javascript/g/grantila/core-types-json-schema.svg?logo=lgtm&logoWidth=18
-[lgtm-url]: https://lgtm.com/projects/g/grantila/core-types-json-schema/context:javascript
 [node-version]: https://img.shields.io/node/v/core-types-json-schema
 [node-url]: https://nodejs.org/en/
 
