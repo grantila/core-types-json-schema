@@ -1,21 +1,23 @@
 export type {
-	ConvertCoreTypesToJsonSchemaOptions
-} from './lib/core-types-to-json-schema'
+	ConvertCoreTypesToJsonSchemaOptions,
+} from './lib/core-types-to-json-schema.js'
 export {
 	decorateSchema,
 	convertCoreTypesToJsonSchema,
-} from './lib/core-types-to-json-schema'
+} from './lib/core-types-to-json-schema.js'
 
 export type {
-	ConvertJsonSchemaToCoreTypesOptions
-} from './lib/json-schema-to-core-types'
-export { convertJsonSchemaToCoreTypes } from './lib/json-schema-to-core-types'
+	ConvertJsonSchemaToCoreTypesOptions,
+} from './lib/json-schema-to-core-types.js'
+export {
+	convertJsonSchemaToCoreTypes,
+} from './lib/json-schema-to-core-types.js'
 
 export {
 	CoreTypesToOpenApiOptions,
 	convertCoreTypesToOpenApi,
 	convertOpenApiToCoreTypes,
-} from './lib/open-api'
+} from './lib/open-api.js'
 
 export {
 	OpenApiSchemaTypeDefinition,
@@ -23,4 +25,4 @@ export {
 	openApiToJsonSchema,
 } from 'openapi-json-schema'
 
-export * as helpers from './lib/annotations'
+export * as helpers from './lib/annotations.js'

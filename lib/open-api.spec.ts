@@ -1,9 +1,10 @@
 import {  simplify } from 'core-types'
 import { PartialOpenApiSchema } from 'openapi-json-schema'
+
 import {
 	convertCoreTypesToOpenApi,
 	convertOpenApiToCoreTypes,
-} from './open-api'
+} from './open-api.js'
 
 
 describe( "Open API", ( ) =>

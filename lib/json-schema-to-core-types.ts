@@ -1,4 +1,4 @@
-import { getAstByString, getAstByObject, getLocation } from 'jsonpos'
+import { getParsedByString, getParsedByObject, getLocation } from 'jsonpos'
 import { decodeRefNameJsonSchema } from 'openapi-json-schema'
 import type {
 	JSONSchema7,
@@ -26,7 +26,7 @@ import {
 	ensureArray,
 } from "core-types"
 
-import { annotateCoreTypes as annotate } from "./annotations"
+import { annotateCoreTypes as annotate } from "./annotations.js"
 
 
 type AdditionalProperties =
@@ -61,8 +61,8 @@ export function convertJsonSchemaToCoreTypes(
 {
 	const parsed =
 		typeof schema === 'string'
-		? getAstByString( schema )
-		: getAstByObject( schema );
+		? getParsedByString( schema )
+		: getParsedByObject( schema );
 	const { json } = parsed;
 
 	const { definitions } = json;
@@ -82,7 +82,7 @@ export function convertJsonSchemaToCoreTypes(
 							path: this.path,
 							loc: getLocation(
 								parsed,
-								{ dataPath: this.path, markIdentifier: true }
+								{ path: this.path, markIdentifier: true }
 							),
 						};
 					},
@@ -95,7 +95,7 @@ export function convertJsonSchemaToCoreTypes(
 						if ( !meta.loc )
 							meta.loc = getLocation(
 								parsed,
-								{ dataPath: this.path, markIdentifier: true }
+								{ path: this.path, markIdentifier: true }
 							);
 						throw new UnsupportedError( message, meta );
 					},

@@ -1,5 +1,4 @@
-// import { NamedType, NodeDocument, simplify } from 'core-types'
-import { annotateCoreTypes, annotateJsonSchema } from './annotations'
+import { annotateCoreTypes, annotateJsonSchema } from './annotations.js'
 
 
 describe( "annotations", ( ) =>

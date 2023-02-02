@@ -10,8 +10,8 @@ import {
 import {
 	ConvertCoreTypesToJsonSchemaOptions,
 	convertCoreTypesToJsonSchema,
-} from './core-types-to-json-schema'
-import { convertJsonSchemaToCoreTypes } from './json-schema-to-core-types'
+} from './core-types-to-json-schema.js'
+import { convertJsonSchemaToCoreTypes } from './json-schema-to-core-types.js'
 
 
 export type CoreTypesToOpenApiOptions =

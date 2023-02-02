@@ -1,5 +1,6 @@
 import { NamedType, NodeDocument, simplify } from 'core-types'
-import { convertJsonSchemaToCoreTypes } from './json-schema-to-core-types'
+
+import { convertJsonSchemaToCoreTypes } from './json-schema-to-core-types.js'
 
 
 const wrapRoot = ( types: Array< NamedType > ): NodeDocument => ( {

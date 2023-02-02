@@ -10,7 +10,7 @@ import type {
 } from 'core-types'
 import { UnsupportedError } from 'core-types'
 
-import { annotateJsonSchema as annotate } from "./annotations"
+import { annotateJsonSchema as annotate } from "./annotations.js"
 
 
 export interface ConvertCoreTypesToJsonSchemaOptions
