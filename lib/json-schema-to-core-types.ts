@@ -380,6 +380,17 @@ function isComplex( schema: JSONSchema7 )
 		Object.keys( schema ).some( prop => complexProps.has( prop ) );
 }
 
+function stripComplex( schema: JSONSchema7 )
+{
+	return typeof schema === 'object'
+		?
+			Object.fromEntries(
+				Object.entries( schema )
+				.filter( ( [ prop ] ) => !complexProps.has( prop ) )
+			)
+		: schema;
+}
+
 function fromSchema( schema: JSONSchema7Definition, ctx: Context ): NodeType
 {
 	if ( typeof schema === 'boolean' )
@@ -388,7 +399,19 @@ function fromSchema( schema: JSONSchema7Definition, ctx: Context ): NodeType
 			{ blob: { schema } }
 		);
 	else if ( isComplex( schema ) )
-		return fromComplex( pushDown( schema, ctx ), ctx );
+	{
+		const plainType = stripComplex( schema );
+		if ( plainType?.type )
+			return {
+				type: 'and',
+				and: [
+					fromSchema( plainType, ctx ),
+					fromComplex( pushDown( schema, ctx ), ctx ),
+				]
+			};
+		else
+			return fromComplex( pushDown( schema, ctx ), ctx );
+	}
 
 	if ( typeof schema === 'undefined' )
 		ctx.throwUnsupportedError(

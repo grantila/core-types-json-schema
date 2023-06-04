@@ -1,6 +1,7 @@
 import { NamedType, NodeDocument, simplify } from 'core-types'
 
 import { convertJsonSchemaToCoreTypes } from './json-schema-to-core-types.js'
+import { JSONSchema7 } from 'json-schema';
 
 
 const wrapRoot = ( types: Array< NamedType > ): NodeDocument => ( {
@@ -312,5 +313,53 @@ describe( "convertJsonSchemaToCoreTypes", ( ) =>
 			);
 		} );
 
+	} );
+
+	// Ensures https://github.com/grantila/typeconv/issues/34
+	it( "allOf combined with type", ( ) =>
+	{
+		const baseSchema = {
+			$id: 'base',
+			type: 'object',
+			required: ['id'],
+			properties: {
+				id: {
+					description: 'Content uniq ID.',
+					type: 'string',
+				},
+			},
+		} satisfies JSONSchema7;
+
+		const schema = {
+			allOf: [baseSchema],
+			$id: 'something',
+			type: 'object',
+			title: 'CMS Product Documentation',
+			required: ['title', 'excerpt'],
+			properties: {
+				title: {
+					type: 'string',
+					description: 'Content title',
+					maxLength: 30,
+				},
+				excerpt: {
+					type: 'string',
+					description: 'Short description of post.',
+					minLength: 15,
+					maxLength: 300,
+				},
+			},
+		} satisfies JSONSchema7;
+
+		const contentSchema = {
+			definitions: {
+				'Something': schema,
+			},
+		} satisfies JSONSchema7;
+
+		const { data } = convertJsonSchemaToCoreTypes( contentSchema );
+		const something = simplify( data.types[ 0 ], { mergeObjects: true } );
+
+		expect( something ).toMatchSnapshot( );
 	} );
 } );

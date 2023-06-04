@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`convertJsonSchemaToCoreTypes allOf combined with type 1`] = `
+{
+  "additionalProperties": true,
+  "name": "Something",
+  "properties": {
+    "excerpt": {
+      "node": {
+        "description": "Short description of post.",
+        "type": "string",
+      },
+      "required": true,
+    },
+    "id": {
+      "node": {
+        "description": "Content uniq ID.",
+        "type": "string",
+      },
+      "required": true,
+    },
+    "title": {
+      "node": {
+        "description": "Content title",
+        "type": "string",
+      },
+      "required": true,
+    },
+  },
+  "title": "CMS Product Documentation",
+  "type": "object",
+}
+`;
