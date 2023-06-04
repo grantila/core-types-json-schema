@@ -63,9 +63,6 @@
     "extensionsToTreatAsEsm": [
       ".ts"
     ],
-    "testMatch": [
-      "<rootDir>/lib/**/*.spec.ts"
-    ],
     "testEnvironment": "node",
     "coverageReporters": [
       "lcov",
